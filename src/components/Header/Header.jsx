@@ -49,13 +49,14 @@ const Header = () => {
         {/* right  */}
         <div className='flex items-center justify-end space-x-4'>
           <HomeIcon className='navBtn'/>
-          <div className='relative'>
+          <div className='relative navBtn'>
             <PaperAirplaneIcon className='navBtn rotate-45'/>
             <div className='w-5 h-5 absolute -top-1 -right-2 text-xs text-white bg-red-500 rounded-full flex items-center justify-center animate-pulse'>3</div>
           </div>
           <PlusCircleIcon className='navBtn'/>
           <UserGroupIcon className='navBtn'/>
           <HeartIcon className='navBtn'/>
+          <MenuIcon className='navBtn w-10 h-10 inline-grid md:hidden'/>
           <Image src={Icon} className='h-10 w-10 cursor-pointer rounded-full'/>
         </div>
       </div>
