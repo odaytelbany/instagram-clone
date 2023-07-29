@@ -29,7 +29,7 @@ const Post = ({username,avatar, img, caption,}) => {
             <div className='flex space-x-4 items-center'>
                 <HeartIcon className='btn'/>
                 <ChatIcon className='btn'/>
-                <PaperAirplaneIcon className='btn rotate-[65deg]'/>
+                <PaperAirplaneIcon className='btn rotate-90'/>
             </div>
             <BookmarkIcon className='btn'/>
         </div>
