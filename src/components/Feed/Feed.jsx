@@ -13,7 +13,7 @@ const Feed = () => {
         </section>
 
         <section className='hidden xl:inline md:col-span-1'>
-          <div className='fixed top-20'>
+          <div className=''>
             <MiniProfile />
             <Suggestions />
           </div>
