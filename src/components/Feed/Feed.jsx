@@ -3,6 +3,7 @@ import Stories from '../Stories/Stories'
 import Posts from '../Posts/Posts'
 import MiniProfile from '../MiniProfile/MiniProfile'
 import Suggestions from '../Suggestions/Suggestions'
+import SignInBtn from '../SignInBtn/SignInBtn'
 
 const Feed = () => {
   return (
