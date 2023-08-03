@@ -30,7 +30,7 @@ const Suggestions = () => {
             <img
               className="rounded-full h-12 w-12 p-[0.5px] border mr-3"
               src={item.avatar}
-              alt=""
+              alt="avatar"
             />
             <div className="flex-1">
               <h2 className="font-semibold truncate">{item.username}</h2>

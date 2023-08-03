@@ -18,16 +18,19 @@ const Header = () => {
         <div className="relative w-24 h-10 hidden lg:inline-grid cursor-pointer">
           <Image
             src="https://links.papareact.com/ocw"
+            alt='instagram logo'
             fill={true} 
-            objectFit="contain"
+            className='object-contain'
+            priority
             />
         </div>
 
         <div className="relative w-10 h-10 lg:hidden flex-shrink-0 cursor-pointer">
           <Image
             src="https://links.papareact.com/jjm"
+            alt='instagram logo'
             fill={true}
-            objectFit="contain"
+            className='object-contain'
           />
         </div>
 

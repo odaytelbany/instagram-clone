@@ -1,7 +1,7 @@
 import NextAuth from "next-auth/next"
 import GoogleProvider from "next-auth/providers/google"
 
-const handler = NextAuth({
+export const authOptions = {
   providers: [
     GoogleProvider(
        {
@@ -10,15 +10,12 @@ const handler = NextAuth({
        }
     )
   ],
-  
-  theme: {
-    logo: "https://links.papareact.com/ocw",
-    brandColor: "#F13287",
-    colorScheme: "auto"
-  },
-  // pages: {
-  //   signIn: '/auth/signin'
-  // }
-})
+  pages: {
+    signIn: '/auth'
+  }
+}
+
+
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST }

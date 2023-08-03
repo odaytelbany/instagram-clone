@@ -15,7 +15,7 @@ const Post = ({username,avatar, img, caption,}) => {
     <div className='bg-white my-7 rounded-sm shadow-md'>
         {/* header */}
         <div className='flex items-center p-4'>
-            <img src={avatar} alt="" className='cursor-pointer w-12 h-12 rounded-full mr-2 object-contain p-1'/>
+            <img src={avatar} alt="avatar" className='cursor-pointer w-12 h-12 rounded-full mr-2 object-contain p-1'/>
             <p className='font-bold flex-1'>{username}</p>
             <DotsHorizontalIcon className='h-5'/>
         </div>
