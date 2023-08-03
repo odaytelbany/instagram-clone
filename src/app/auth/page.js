@@ -1,23 +1,23 @@
-import { getProviders, signIn } from "next-auth/react";
+'use client';
 
-export default function SignIn({ providers }) {
-  return (
-    <>
-      {Object.values(providers).map((provider) => (
-        <div key={provider.id}>
-          <button onClick={() => signIn(provider.id)}>Sign in with {provider.name}</button>
-        </div>
-      ))}
-    </>
-  );
-}
+import React, { use } from 'react';
+import { getProviders } from 'next-auth/react';
+import SignInBtn from '../../components/SignInBtn/SignInBtn';
 
-export async function getServerSideProps() {
+async function getData() {
   const providers = await getProviders();
 
-  return {
-    props: {
-      providers,
-    },
-  };
+  return providers;
+}
+
+export default function SignIn() {
+  const providers = use(getData());
+
+  return (
+    <>
+      {Object.values(providers).map(provider => {
+        return <SignInBtn name={provider.name} key={provider.id} />;
+      })}
+    </>
+  );
 }
