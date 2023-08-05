@@ -1,6 +1,7 @@
-import Image from 'next/image'
-import React from 'react'
-import Icon from "/public/1f914.png"
+"use client";
+import Image from "next/image";
+import React from "react";
+import Icon from "/public/1f914.png";
 import {
   SearchIcon,
   PlusCircleIcon,
@@ -9,34 +10,36 @@ import {
   PaperAirplaneIcon,
   MenuIcon,
 } from "@heroicons/react/outline";
-import {HomeIcon} from "@heroicons/react/solid";
+import { HomeIcon } from "@heroicons/react/solid";
+import { useSession } from "next-auth/react";
 
 const Header = () => {
+  const { data: session } = useSession();
   return (
-    <div className='border-b shadow-sm sticky top-0 bg-white z-50'>
+    <div className="border-b shadow-sm sticky top-0 bg-white z-50">
       <div className="flex justify-between items-center max-w-6xl lg:mx-auto">
         <div className="relative w-24 h-10 hidden lg:inline-grid cursor-pointer">
           <Image
             src="https://links.papareact.com/ocw"
-            alt='instagram logo'
-            fill={true} 
-            className='object-contain'
+            alt="instagram logo"
+            fill={true}
+            className="object-contain"
             priority
-            />
+          />
         </div>
 
         <div className="relative w-10 h-10 lg:hidden flex-shrink-0 cursor-pointer">
           <Image
             src="https://links.papareact.com/jjm"
-            alt='instagram logo'
+            alt="instagram logo"
             fill={true}
-            className='object-contain'
+            className="object-contain"
           />
         </div>
 
         {/* middle  */}
 
-        <div className='max-w-screen-sm'>
+        <div className="max-w-screen-sm">
           <div className="relative mt-1 p-3 rounded-md">
             <div className="absolute flex justify-center items-center inset-y-0 pl-3">
               <SearchIcon className="w-5 h-5 text-grey-500" />
@@ -48,23 +51,31 @@ const Header = () => {
           </div>
         </div>
 
-        
         {/* right  */}
-        <div className='flex items-center justify-end space-x-4'>
-          <HomeIcon className='navBtn'/>
-          <div className='relative navBtn'>
-            <PaperAirplaneIcon className='navBtn rotate-45'/>
-            <div className='w-5 h-5 absolute -top-1 -right-2 text-xs text-white bg-red-500 rounded-full flex items-center justify-center animate-pulse'>3</div>
-          </div>
-          <PlusCircleIcon className='navBtn'/>
-          <UserGroupIcon className='navBtn'/>
-          <HeartIcon className='navBtn'/>
-          <MenuIcon className='navBtn w-10 h-10 inline-grid md:hidden'/>
-          <Image src={Icon} className='h-10 w-10 cursor-pointer rounded-full'/>
+        <div className="flex items-center justify-end space-x-4">
+          <HomeIcon className="navBtn" />
+          {session && (
+            <>
+              <div className="relative navBtn">
+                <PaperAirplaneIcon className="navBtn rotate-45" />
+                <div className="w-5 h-5 absolute -top-1 -right-2 text-xs text-white bg-red-500 rounded-full flex items-center justify-center animate-pulse">
+                  3
+                </div>
+              </div>
+              <PlusCircleIcon className="navBtn" />
+              <UserGroupIcon className="navBtn" />
+              <HeartIcon className="navBtn" />
+              <MenuIcon className="navBtn w-10 h-10 inline-grid md:hidden" />
+              <img
+                src={session?.user?.image}
+                className="h-10 w-10 cursor-pointer rounded-full"
+              />
+            </>
+          )}
         </div>
       </div>
     </div>
   );
 };
 
-export default Header
+export default Header;
