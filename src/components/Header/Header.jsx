@@ -2,6 +2,7 @@
 import Image from "next/image";
 import React from "react";
 import Icon from "/public/1f914.png";
+import Link from "next/link";
 import {
   SearchIcon,
   PlusCircleIcon,
@@ -54,6 +55,9 @@ const Header = () => {
         {/* right  */}
         <div className="flex items-center justify-end space-x-4">
           <HomeIcon className="navBtn" />
+          <Link href="/auth" className="font-semibold">
+            Sign In
+          </Link>
           {session && (
             <>
               <div className="relative navBtn">
