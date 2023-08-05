@@ -12,6 +12,13 @@ export const authOptions = {
   ],
   pages: {
     signIn: '/auth'
+  }, 
+  callbacks: {
+    session({ session, user, token }) {
+      session.user.username = session.user.name.split(" ").join("").toLowerCase();
+      session.user.uid = token.sub
+      return session;
+    },
   }
 }
 

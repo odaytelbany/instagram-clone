@@ -4,8 +4,8 @@ import React, { use } from 'react';
 import { getProviders } from 'next-auth/react';
 import SignInBtn from '../../components/SignInBtn/SignInBtn';
 
-async function getData() {
-  const providers = await getProviders();
+function getData() {
+  const providers =  getProviders();
 
   return providers;
 }
