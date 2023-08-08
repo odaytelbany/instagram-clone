@@ -5,8 +5,8 @@ import { faker } from "@faker-js/faker";
 const Suggestions = () => {
   const [suggestions, setSuggestions] = useState([]);
 
-  useEffect(() => {
-    const data = [...Array(4)].map((_, i) => ({
+  useEffect(async () => {
+    const data = await [...Array(4)].map((_, i) => ({
       userId: i,
       username: faker.internet.userName(),
       email: faker.internet.email(),
@@ -37,7 +37,7 @@ const Suggestions = () => {
               <h3 className="text-xs text-gray-500">welcome to instagram</h3>
             </div>
             <button className="text-xs font-semibold cursor-pointer text-blue-400">
-              Sign Out
+              Remove
             </button>
           </div>
         ))}

@@ -58,9 +58,11 @@ const Header = () => {
         {/* right  */}
         <div className="flex items-center justify-end space-x-4">
           <HomeIcon className="navBtn" />
-          <Link href="/auth" className="font-semibold">
-            Sign In
-          </Link>
+          {!session && (
+            <Link href="/auth" className="font-semibold">
+              Sign In
+            </Link>
+          )}
           {session && (
             <>
               <div className="relative navBtn">
@@ -69,7 +71,10 @@ const Header = () => {
                   3
                 </div>
               </div>
-              <PlusCircleIcon className="navBtn" onClick={() => setOpen(true)}/>
+              <PlusCircleIcon
+                className="navBtn"
+                onClick={() => setOpen(true)}
+              />
               <UserGroupIcon className="navBtn" />
               <HeartIcon className="navBtn" />
               <MenuIcon className="navBtn w-10 h-10 inline-grid md:hidden" />
