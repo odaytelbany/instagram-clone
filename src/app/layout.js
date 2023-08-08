@@ -1,7 +1,9 @@
+"use client"
 import Header from '../components/Header/Header';
 import './globals.css';
 import { Inter } from 'next/font/google';
 import { NextAuthProvider } from './Providers';
+import { RecoilRoot } from 'recoil';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -15,8 +17,10 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${inter.className} bg-gray-50 `}>
         <NextAuthProvider>
-          <Header />
-          {children}
+          <RecoilRoot>
+            <Header />
+            {children}
+          </RecoilRoot>
         </NextAuthProvider>
       </body>
     </html>
