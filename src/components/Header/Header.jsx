@@ -26,9 +26,8 @@ const Header = () => {
           <Image
             src="https://links.papareact.com/ocw"
             alt="instagram logo"
-            fill={true}
             className="object-contain"
-            priority
+            fill
           />
         </div>
 
@@ -36,8 +35,8 @@ const Header = () => {
           <Image
             src="https://links.papareact.com/jjm"
             alt="instagram logo"
-            fill={true}
             className="object-contain"
+            fill
           />
         </div>
 

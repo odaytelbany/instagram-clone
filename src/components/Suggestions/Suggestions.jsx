@@ -5,8 +5,8 @@ import { faker } from "@faker-js/faker";
 const Suggestions = () => {
   const [suggestions, setSuggestions] = useState([]);
 
-  useEffect(async () => {
-    const data = await [...Array(4)].map((_, i) => ({
+  useEffect(() => {
+    const data = [...Array(4)].map((_, i) => ({
       userId: i,
       username: faker.internet.userName(),
       email: faker.internet.email(),
@@ -25,8 +25,8 @@ const Suggestions = () => {
         <h2 className="text-sm font-bold">See All</h2>
       </div>
       <div>
-        {suggestions.map((item) => (
-          <div className="flex items-center w-full mt-8">
+        {suggestions.map((item, i) => (
+          <div className="flex items-center w-full mt-8" key={i}>
             <img
               className="rounded-full h-12 w-12 p-[0.5px] border mr-3"
               src={item.avatar}
