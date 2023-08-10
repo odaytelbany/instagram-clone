@@ -6,7 +6,8 @@ import { Dialog, Transition } from '@headlessui/react'
 import { CameraIcon, CollectionIcon } from '@heroicons/react/outline';
 import {db, storage} from '../../../firebase';
 import { useSession } from 'next-auth/react';
-import { addDoc, collection, serverTimestamp,  } from 'firebase/firestore';
+import { addDoc, collection, doc, serverTimestamp, updateDoc,  } from 'firebase/firestore';
+import { ref, getDownloadURL, uploadString } from 'firebase/storage';
 
 const Modal = () => {
     const [open, setOpen] = useRecoilState(modalState);
@@ -47,6 +48,21 @@ const Modal = () => {
         profileImg: session.user.image,
         timestamp: serverTimestamp()
       })
+
+      const imageRef = ref(storage, `posts/${docRef.id}/image`)
+
+      await uploadString(imageRef, selectedFile, "data_url").then(
+        async (snapshot) => {
+          const downloadURL = await getDownloadURL(imageRef);
+          await updateDoc(doc(db, 'posts', docRef.id), {
+            image: downloadURL
+          })
+        }
+      )
+
+      setOpen(false);
+      setLoading(false);
+      setSelectedFile(null);
     }
 
     return (
@@ -123,10 +139,11 @@ const Modal = () => {
                   <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
                     <button
                       type="button"
+                      disabled={!selectedFile}
                       className="inline-flex w-full justify-center rounded-md border border-transparent px-4 py-2 bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 text-sm font-semibold text-white shadow-sm hover:bg-red-700 disabled:bg-gray-300 disabled:cursor-not-allowed hover:disabled:bg-gray-300"
-                      onClick={() => setOpen(false)}
+                      onClick={uploadPost}
                     >
-                      Upload Post
+                      {loading ? "Uploading..." : "Upload Post"}
                     </button>
                   </div>
                 </Dialog.Panel>
