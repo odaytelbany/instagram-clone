@@ -3,14 +3,20 @@ import React from 'react'
 import { useRecoilState } from 'recoil'
 import { Fragment, useRef, useState } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { CameraIcon } from '@heroicons/react/outline';
+import { CameraIcon, CollectionIcon } from '@heroicons/react/outline';
+import {db, storage} from '../../../firebase';
+import { useSession } from 'next-auth/react';
+import { addDoc, collection, serverTimestamp,  } from 'firebase/firestore';
 
 const Modal = () => {
     const [open, setOpen] = useRecoilState(modalState);
     const filePickerRef = useRef(null);
+    const captionRef = useRef(null);
     const [selectedFile, setSelectedFile] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const {data: session} = useSession();
 
-    console.log(open);
+    // Read image and add it to the post 
     const addImageToPost = (e) => {
       const reader = new FileReader();
       if (e.target.files[0]) {
@@ -20,12 +26,27 @@ const Modal = () => {
         setSelectedFile(readerEvent.target.result);
       };
     };
-
+    
+    // Close post upload pop up 
     const close = () => {
       setOpen(false);
       setTimeout(() => {
         setSelectedFile(null);
       }, 1000)
+    }
+
+    // Upload the post to firestore 
+    const uploadPost = async () => {
+      if (loading) return;
+
+      setLoading(true);
+
+      const docRef = await addDoc(collection(db, 'posts'), {
+        username: session.user.username,
+        caption: captionRef.current.value,
+        profileImg: session.user.image,
+        timestamp: serverTimestamp()
+      })
     }
 
     return (
@@ -94,6 +115,7 @@ const Modal = () => {
                           type="text"
                           className="border-none focus:ring-0 w-full text-center border border-1"
                           placeholder="Please Enter a Caption..."
+                          ref={captionRef}
                         />
                       </div>
                     </div>
