@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BookmarkIcon,
   ChatIcon,
@@ -8,9 +8,11 @@ import {
   EmojiHappyIcon,
 } from "@heroicons/react/outline";
 import { HeartIcon as HeartIconFilled } from "@heroicons/react/solid";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { addDoc, collection, onSnapshot, orderBy, query, serverTimestamp } from "firebase/firestore";
 import { useSession } from "next-auth/react";
 import { db } from "../../../firebase";
+import Moment from "react-moment";
+
 
 const Post = ({ id, username, profileImg, image, caption }) => {
     const {data: session} = useSession();
@@ -30,7 +32,17 @@ const Post = ({ id, username, profileImg, image, caption }) => {
             timestamp: serverTimestamp()
         })
     }
-    
+
+    useEffect(() => {
+        const unsubscribe = onSnapshot(query(collection(db, 'posts', id, 'comments'), orderBy('timestamp', 'desc')),
+            snapshot => {
+                setComments(snapshot.docs);
+            }
+        )
+
+        return unsubscribe;
+    },[db])
+
 
   return (
     image && (
@@ -60,8 +72,31 @@ const Post = ({ id, username, profileImg, image, caption }) => {
           <BookmarkIcon className="btn" />
         </div>
         {/* caption */}
-        <div className="p-5">{caption}</div>
+        <div className="p-5 overflow-x-scroll scrollbar-thumb-black scrollbar-thin">{caption}</div>
         {/* comments */}
+
+        {
+           comments && 
+           <div>
+                {
+                    comments.map((comment) => (
+                        <div className="flex items-center ml-8 mb-3 overflow-x-scroll scrollbar-thumb-black scrollbar-thin  ">
+                            <img className="h-6 rounded-full" src={comment.data().userImage} alt="" /> {" "}
+                            <p className="flex flex-1 items-center ml-2">
+                                <span className="font-bold mr-2">{comment.data().username}</span>
+                                <p className="text-sm">{comment.data().comment}</p>
+                            </p>
+
+                            <Moment fromNow interval={1000} className="pr-5 text-xs">
+                                {comment?.data().timestamp?.toDate()}
+                            </Moment>
+                        </div>
+                    ))
+                }
+           </div>
+        }
+
+        {/* comments form  */}
         <form className="flex items-center p-4">
           <EmojiHappyIcon className="h-7" />
           <input
