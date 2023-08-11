@@ -3,22 +3,6 @@ import Post from '../Post/Post'
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { db } from '../../../firebase';
 
-const posts = [
-    {
-        id: 1,
-        username: "odaytelbany",
-        avatar: "https://avatars.githubusercontent.com/u/100791118?v=4",
-        img: "https://images.unsplash.com/photo-1640957507202-6e5ad7cd3365?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=425&q=80",
-        caption: "Lorem ipsum dolor sit amet consectetur adipisicing elit alias!"
-    },
-    {
-        id: 2,
-        username: "Aliali",
-        avatar: "https://avatars.githubusercontent.com/u/100791118?v=4",
-        img: "https://play-lh.googleusercontent.com/IeNJWoKYx1waOhfWF6TiuSiWBLfqLb18lmZYXSgsH1fvb8v1IYiZr5aYWe0Gxu-pVZX3=w240-h480-rw",
-        caption: " id magnam numquam quas unde consequatur eaque, fugiat magni a. Ratione, error alias!"
-    }
-]
 const Posts = () => {
     const [posts, setPosts] = useState([]);
 
@@ -31,12 +15,12 @@ const Posts = () => {
 
         return unsubscribe;
     }, [db])
-    console.log(posts)
+    
   return (
     <div>
         {
             posts?.map((post) => (
-                <Post key={post.id} {...post.data()}/>
+                <Post key={post.id} id={post.id} {...post.data()}/>
             ))
         }        
     </div>
