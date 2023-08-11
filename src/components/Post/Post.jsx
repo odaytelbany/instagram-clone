@@ -10,19 +10,18 @@ import {
 import { HeartIcon as HeartIconFilled } from '@heroicons/react/solid';
 
 
-const Post = ({username,avatar, img, caption,}) => {
-  return (
-    <div className='bg-white my-7 rounded-sm shadow-md'>
+const Post = ({username,profileImg, image, caption,}) => {
+       return image && <div className='bg-white my-7 rounded-sm shadow-md'>
         {/* header */}
         <div className='flex items-center p-4'>
-            <img src={avatar} alt="avatar" className='cursor-pointer w-12 h-12 rounded-full mr-2 object-contain p-1'/>
+            <img src={profileImg} alt="avatar" className='cursor-pointer w-12 h-12 rounded-full mr-2 object-contain p-1'/>
             <p className='font-bold flex-1'>{username}</p>
             <DotsHorizontalIcon className='h-5'/>
         </div>
 
         {/* img */}
         <div>
-            <img src={img} alt="" className='w-full object-cover'/>
+            <img src={image} alt="" className='w-full object-cover'/>
         </div>
         {/* buttons */}
         <div className='flex justify-between px-4 mt-4 items-center'>
@@ -44,7 +43,8 @@ const Post = ({username,avatar, img, caption,}) => {
             <button className='font-semibold text-blue-400'>Post</button>
         </form>
     </div>
-  )
+    
+  
 }
 
 export default Post
