@@ -83,7 +83,6 @@ const Post = ({ id, username, profileImg, image, caption }) => {
     );
   }, [likes]);
 
-  console.log(likes);
   return (
     image && (
       <div className="bg-white my-7 rounded-sm shadow-md">

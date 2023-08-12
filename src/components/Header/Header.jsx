@@ -12,7 +12,7 @@ import {
   MenuIcon,
 } from "@heroicons/react/outline";
 import { HomeIcon } from "@heroicons/react/solid";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useRecoilState } from "recoil";
 import { modalState } from "@/atoms/modalAtom";
 
@@ -20,7 +20,7 @@ const Header = () => {
   const { data: session } = useSession();
   const [open, setOpen] = useRecoilState(modalState);
   return (
-    <div className="border-b shadow-sm sticky top-0 bg-white z-50">
+    <div className="border-b shadow-sm sticky top-0 bg-white z-50 px-2 md:px-10">
       <div className="flex justify-between items-center max-w-6xl lg:mx-auto">
         <div className="relative w-24 h-10 hidden lg:inline-grid cursor-pointer">
           <Image
@@ -43,7 +43,7 @@ const Header = () => {
         {/* middle  */}
 
         <div className="max-w-screen-sm">
-          <div className="relative mt-1 p-3 rounded-md">
+          <div className="relative mt-1 p-3 rounded-md ">
             <div className="absolute flex justify-center items-center inset-y-0 pl-3">
               <SearchIcon className="w-5 h-5 text-grey-500" />
             </div>
@@ -58,7 +58,7 @@ const Header = () => {
         <div className="flex items-center justify-end space-x-4">
           <HomeIcon className="navBtn" />
           {!session && (
-            <Link href="/auth" className="font-semibold">
+            <Link href="/auth" className="font-semibold text-sm flex justify-center items-center !ml-0 md:!ml-4 break-words">
               Sign In
             </Link>
           )}
@@ -80,6 +80,7 @@ const Header = () => {
               <img
                 src={session?.user?.image}
                 className="h-10 w-10 cursor-pointer rounded-full"
+                onClick={signOut}
               />
             </>
           )}

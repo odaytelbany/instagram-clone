@@ -23,7 +23,6 @@ const Stories = () => {
     setProfiles(suggestions);
   }, []);
 
-  console.log('profiles', profiles?.at(0))
   return (
     profiles?.at(0)?.avatar && (<div className='flex space-x-2 p-4 bg-white mt-8 border border-gray-200 overflow-x-scroll rounded-sm scrollbar-thin scrollbar-thumb-black'>
       {session && <Story img={session?.user?.image} name={session?.user?.username}/>}

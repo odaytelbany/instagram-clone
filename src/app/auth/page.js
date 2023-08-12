@@ -16,7 +16,7 @@ export default function SignIn() {
   return (
     <div className='flex flex-col justify-center items-center'>
       <img src='https://links.papareact.com/ocw' className='w-40 mt-12'/>
-      <p className='w-2/5 text-center mb-16 mt-4'>The best photos, videos and stories application with the new reels feature, created by meta</p>
+      <p className='md:w-2/5 text-center mb-16 mt-4'>The best photos, videos and stories application with the new reels feature, created by meta</p>
       {Object.values(providers).map(provider => {
         return <SignInBtn name={provider.name} key={provider.id} />;
       })}
