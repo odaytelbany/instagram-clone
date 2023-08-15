@@ -22,6 +22,7 @@ const Feed = () => {
             <Suggestions />
           </div>
         </section>
+        
         }
     </main>
   )
