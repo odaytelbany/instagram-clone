@@ -23,20 +23,18 @@ const Header = () => {
     <div className="border-b shadow-sm sticky top-0 bg-white z-50 px-2 md:px-10">
       <div className="flex justify-between items-center max-w-6xl lg:mx-auto">
         <div className="relative w-24 h-10 hidden lg:inline-grid cursor-pointer">
-          <Image
+          <img
             src="https://links.papareact.com/ocw"
             alt="instagram logo"
             className="object-contain"
-            fill
           />
         </div>
 
         <div className="relative w-10 h-10 lg:hidden flex-shrink-0 cursor-pointer">
-          <Image
+          <img
             src="https://links.papareact.com/jjm"
             alt="instagram logo"
             className="object-contain"
-            fill
           />
         </div>
 

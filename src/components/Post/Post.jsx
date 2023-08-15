@@ -132,18 +132,18 @@ const Post = ({ id, username, profileImg, image, caption }) => {
         {comments && (
           <div>
             {comments.map((comment) => (
-              <div className="flex items-center ml-8 mb-3 overflow-x-scroll scrollbar-thumb-black scrollbar-thin  ">
+              <div key={comment.id} className="flex items-center ml-8 mb-3 overflow-x-scroll scrollbar-thumb-black scrollbar-thin  ">
                 <img
                   className="h-6 rounded-full"
                   src={comment.data().userImage}
                   alt=""
                 />{" "}
-                <p className="flex flex-1 items-center ml-2">
+                <div className="flex flex-1 items-center ml-2">
                   <span className="font-bold mr-2">
                     {comment.data().username}
                   </span>
                   <p className="text-sm">{comment.data().comment}</p>
-                </p>
+                </div>
                 <Moment fromNow interval={1000} className="pr-5 text-xs">
                   {comment?.data().timestamp?.toDate()}
                 </Moment>
