@@ -23,7 +23,7 @@ import { useSession } from "next-auth/react";
 import { db } from "../../../firebase";
 import Moment from "react-moment";
 
-const Post = ({ id, username, profileImg, image, caption }) => {
+const Post = ({ id, uid, username, profileImg, image, caption }) => {
   const { data: session } = useSession();
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
@@ -66,6 +66,17 @@ const Post = ({ id, username, profileImg, image, caption }) => {
       : deleteDoc(doc(db, "posts", id, "likes", session.user.uid));
   };
 
+  const deletePost = async (e) => {
+    if (uid == session?.user?.uid){
+      deleteDoc(doc(db, "posts", id));
+      console.log("for this user")
+    } else{
+      console.log("not for this user")
+      console.log(uid)
+      console.log(session.user.uid)
+    }
+  }
+
   useEffect(() => {
     const unsubscribe = onSnapshot(
       collection(db, "posts", id, "likes"),
@@ -94,7 +105,10 @@ const Post = ({ id, username, profileImg, image, caption }) => {
             className="cursor-pointer w-12 h-12 rounded-full mr-2 object-contain p-1"
           />
           <p className="font-bold flex-1">{username}</p>
-          <DotsHorizontalIcon className="h-5" />
+          <DotsHorizontalIcon
+           className="h-5" 
+           onClick={deletePost}
+          />
         </div>
 
         {/* img */}

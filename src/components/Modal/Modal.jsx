@@ -43,12 +43,12 @@ const Modal = () => {
       setLoading(true);
 
       const docRef = await addDoc(collection(db, 'posts'), {
-        username: session.user.username,
+        username: session?.user?.username,
+        uid: session?.user?.uid,
         caption: captionRef.current.value,
         profileImg: session.user.image,
-        timestamp: serverTimestamp()
+        timestamp: serverTimestamp(),
       })
-
       const imageRef = ref(storage, `posts/${docRef.id}/image`)
 
       await uploadString(imageRef, selectedFile, "data_url").then(

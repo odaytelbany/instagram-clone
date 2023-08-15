@@ -19,9 +19,10 @@ const Posts = () => {
   return (
     <div>
         {
-            posts?.map((post) => (
-                <Post key={post.id} id={post.id} {...post.data()}/>
-            ))
+            posts?.map((post) => {
+                console.log(post.data())
+                return <Post key={post.id} id={post.id} {...post.data()}/>
+            })
         }        
     </div>
   )
