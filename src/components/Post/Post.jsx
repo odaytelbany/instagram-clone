@@ -104,10 +104,9 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
             className="cursor-pointer w-12 h-12 rounded-full mr-2 object-contain p-1"
           />
           <p className="font-bold flex-1">{username}</p>
-          <div className=" hover:bg-gray-200 cursor-pointer rounded-full p-2">
+          <div onClick={() => setDropMenu(prev => !prev)} className=" hover:bg-gray-200 cursor-pointer rounded-full p-2">
             <DotsHorizontalIcon
              className="h-5" 
-             onClick={() => setDropMenu(prev => !prev)}
             />
           </div>
         </div>
