@@ -190,9 +190,12 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
         {/* drop menu  */}
         {
           dropMenu && 
-          <ul className="absolute top-16 right-4 bg-white w-1/4 flex flex-col drop-shadow-2xl">
-            <li onClick={deletePost} className="text-center hover:bg-slate-50 transition-all delay-50 cursor-pointer border-b-2 border-gray-100">Delete</li>
-            <li className="text-center hover:bg-slate-50 transition-all delay-50 cursor-pointer border-b-2 border-gray-100">test</li>
+          <ul className="absolute top-16 right-5 bg-white w-1/4 flex flex-col drop-shadow-2xl shadow-2xl rounded-sm px-1.5">
+            {
+              session?.user?.uid === uid &&
+              <li onClick={deletePost} className="text-center hover:bg-slate-50 transition-all delay-50 cursor-pointer border-b-2 border-gray-200">Delete</li>
+            }
+            <li className="text-center hover:bg-slate-50 transition-all delay-50 cursor-pointer border-gray-200">Shere</li>
           </ul>
         }
       </div>
