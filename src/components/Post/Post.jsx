@@ -6,6 +6,7 @@ import {
   PaperAirplaneIcon,
   HeartIcon,
   EmojiHappyIcon,
+  PlusCircleIcon
 } from "@heroicons/react/outline";
 import { HeartIcon as HeartIconFilled } from "@heroicons/react/solid";
 import {
@@ -30,6 +31,7 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
   const [likes, setLikes] = useState([]);
   const [hasLiked, setHasLiked] = useState(false);
   const [dropMenu, setDropMenu] = useState(false);
+  const [moreComments, setMoreComments] = useState(2);
 
   const sendComment = async (e) => {
     e.preventDefault();
@@ -143,8 +145,8 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
         {/* comments */}
 
         {comments && (
-          <div>
-            {comments.map((comment) => (
+          <div className="flex flex-col">
+            {comments.slice(0, moreComments).map((comment) => (
               <div key={comment.id} className="flex items-center ml-8 mb-3 overflow-x-scroll scrollbar-thumb-black scrollbar-thin  ">
                 <img
                   className="h-6 rounded-full"
@@ -162,6 +164,12 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
                 </Moment>
               </div>
             ))}
+            <button className="mx-auto content-center">
+              {
+                (comments.length > 2 && moreComments !== -1)&& 
+                <PlusCircleIcon onClick={() => setMoreComments(-1)} className="h-6 hover:scale-125 ease-out transition-all delay-75 text-center"/>
+              }
+            </button>
           </div>
         )}
 
