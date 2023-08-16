@@ -29,6 +29,7 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
   const [comments, setComments] = useState([]);
   const [likes, setLikes] = useState([]);
   const [hasLiked, setHasLiked] = useState(false);
+  const [dropMenu, setDropMenu] = useState(false);
 
   const sendComment = async (e) => {
     e.preventDefault();
@@ -70,11 +71,7 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
     if (uid == session?.user?.uid){
       deleteDoc(doc(db, "posts", id));
       console.log("for this user")
-    } else{
-      console.log("not for this user")
-      console.log(uid)
-      console.log(session.user.uid)
-    }
+    } 
   }
 
   useEffect(() => {
@@ -96,7 +93,7 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
 
   return (
     image && (
-      <div className="bg-white my-7 rounded-sm shadow-md">
+      <div className="relative bg-white my-7 rounded-sm shadow-md">
         {/* header */}
         <div className="flex items-center p-4">
           <img
@@ -105,10 +102,12 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
             className="cursor-pointer w-12 h-12 rounded-full mr-2 object-contain p-1"
           />
           <p className="font-bold flex-1">{username}</p>
-          <DotsHorizontalIcon
-           className="h-5" 
-           onClick={deletePost}
-          />
+          <div className=" hover:bg-gray-200 cursor-pointer rounded-full p-2">
+            <DotsHorizontalIcon
+             className="h-5" 
+             onClick={() => setDropMenu(prev => !prev)}
+            />
+          </div>
         </div>
 
         {/* img */}
@@ -187,6 +186,15 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
             </button>
           </form>
         )}
+
+        {/* drop menu  */}
+        {
+          dropMenu && 
+          <ul className="absolute top-16 right-4 bg-white w-1/4 flex flex-col drop-shadow-2xl">
+            <li onClick={deletePost} className="text-center hover:bg-slate-50 transition-all delay-50 cursor-pointer border-b-2 border-gray-100">Delete</li>
+            <li className="text-center hover:bg-slate-50 transition-all delay-50 cursor-pointer border-b-2 border-gray-100">test</li>
+          </ul>
+        }
       </div>
     )
   );

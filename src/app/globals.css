@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
 @layer components {
   .navBtn{
     @apply hidden h-6 md:inline-flex cursor-pointer transition-all duration-150 ease-out hover:scale-125
