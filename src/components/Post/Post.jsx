@@ -6,7 +6,7 @@ import {
   PaperAirplaneIcon,
   HeartIcon,
   EmojiHappyIcon,
-  PlusCircleIcon
+  PlusCircleIcon,
 } from "@heroicons/react/outline";
 import { HeartIcon as HeartIconFilled } from "@heroicons/react/solid";
 import {
@@ -23,6 +23,7 @@ import {
 import { useSession } from "next-auth/react";
 import { db } from "../../../firebase";
 import Moment from "react-moment";
+import EmojiPicker from "emoji-picker-react";
 
 const Post = ({ id, uid, username, profileImg, image, caption }) => {
   const { data: session } = useSession();
@@ -32,6 +33,7 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
   const [hasLiked, setHasLiked] = useState(false);
   const [dropMenu, setDropMenu] = useState(false);
   const [moreComments, setMoreComments] = useState(2);
+  const [openEmoji, setOpenEmoji] = useState(false);
 
   const sendComment = async (e) => {
     e.preventDefault();
@@ -70,11 +72,10 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
   };
 
   const deletePost = async (e) => {
-    if (uid == session?.user?.uid){
+    if (uid == session?.user?.uid) {
       deleteDoc(doc(db, "posts", id));
-      console.log("for this user")
-    } 
-  }
+    }
+  };
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
@@ -93,6 +94,13 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
     );
   }, [likes]);
 
+  // For the Emoji picker
+  const emojiClickHandler = (e) => {
+    // setComment(prev => prev + emojiObject);
+    console.log(e.emoji);
+    setComment((prev) => prev + e.emoji);
+  };
+
   return (
     image && (
       <div className="relative bg-white my-7 rounded-sm shadow-md">
@@ -104,10 +112,11 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
             className="cursor-pointer w-12 h-12 rounded-full mr-2 object-contain p-1"
           />
           <p className="font-bold flex-1">{username}</p>
-          <div onClick={() => setDropMenu(prev => !prev)} className=" hover:bg-gray-200 cursor-pointer rounded-full p-2">
-            <DotsHorizontalIcon
-             className="h-5" 
-            />
+          <div
+            onClick={() => setDropMenu((prev) => !prev)}
+            className=" hover:bg-gray-200 cursor-pointer rounded-full p-2"
+          >
+            <DotsHorizontalIcon className="h-5" />
           </div>
         </div>
 
@@ -146,7 +155,10 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
         {comments && (
           <div className="flex flex-col">
             {comments.slice(0, moreComments).map((comment) => (
-              <div key={comment.id} className="flex items-center ml-8 mb-3 overflow-x-scroll scrollbar-thumb-black scrollbar-thin  ">
+              <div
+                key={comment.id}
+                className="flex items-center ml-8 mb-3 overflow-x-scroll scrollbar-thumb-black scrollbar-thin  "
+              >
                 <img
                   className="h-6 rounded-full"
                   src={comment.data().userImage}
@@ -164,18 +176,23 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
               </div>
             ))}
             <button className="mx-auto content-center">
-              {
-                (comments.length > 2 && moreComments !== -1)&& 
-                <PlusCircleIcon onClick={() => setMoreComments(-1)} className="h-6 hover:scale-125 ease-out transition-all delay-75 text-center"/>
-              }
+              {comments.length > 2 && moreComments !== -1 && (
+                <PlusCircleIcon
+                  onClick={() => setMoreComments(-1)}
+                  className="h-6 hover:scale-125 ease-out transition-all delay-75 text-center"
+                />
+              )}
             </button>
           </div>
         )}
 
         {/* comments form  */}
         {session && (
-          <form className="flex items-center p-4">
-            <EmojiHappyIcon className="h-7" />
+          <form className="flex items-center p-4 relative">
+            <EmojiHappyIcon
+              className="h-7 hover:text-gray-400 cursor-pointer"
+              onClick={() => setOpenEmoji((prev) => !prev)}
+            />
             <input
               value={comment}
               onChange={(e) => setComment(e.target.value)}
@@ -193,18 +210,24 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
             </button>
           </form>
         )}
+        {openEmoji && <EmojiPicker onEmojiClick={emojiClickHandler} className="hover:text-gray-400 cursor-pointer"/>}
 
         {/* drop menu  */}
-        {
-          dropMenu && 
+        {dropMenu && (
           <ul className="absolute top-16 right-5 bg-white w-1/4 flex flex-col drop-shadow-2xl shadow-2xl rounded-sm px-1.5">
-            {
-              session?.user?.uid === uid &&
-              <li onClick={deletePost} className="text-center hover:bg-slate-50 transition-all delay-50 cursor-pointer border-b-2 border-gray-200">Delete</li>
-            }
-            <li className="text-center hover:bg-slate-50 transition-all delay-50 cursor-pointer border-gray-200">Shere</li>
+            {session?.user?.uid === uid && (
+              <li
+                onClick={deletePost}
+                className="text-center hover:bg-slate-50 transition-all delay-50 cursor-pointer border-b-2 border-gray-200"
+              >
+                Delete
+              </li>
+            )}
+            <li className="text-center hover:bg-slate-50 transition-all delay-50 cursor-pointer border-gray-200">
+              Shere
+            </li>
           </ul>
-        }
+        )}
       </div>
     )
   );

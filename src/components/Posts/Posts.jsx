@@ -20,7 +20,6 @@ const Posts = () => {
     <div>
         {
             posts?.map((post) => {
-                console.log(post.data())
                 return <Post key={post.id} id={post.id} {...post.data()}/>
             })
         }        
