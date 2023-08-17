@@ -40,6 +40,7 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
 
     const commentToSend = comment;
     setComment("");
+    setOpenEmoji(false);
 
     await addDoc(collection(db, "posts", id, "comments"), {
       comment: commentToSend,
@@ -210,7 +211,11 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
             </button>
           </form>
         )}
-        {openEmoji && <EmojiPicker onEmojiClick={emojiClickHandler} className="hover:text-gray-400 cursor-pointer"/>}
+        {openEmoji && 
+        <div  className="absolute bottom-16 left-4">
+          <EmojiPicker onEmojiClick={emojiClickHandler} lazyLoadEmojis={true}/>
+        </div>
+        }
 
         {/* drop menu  */}
         {dropMenu && (
