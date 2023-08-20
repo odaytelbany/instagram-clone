@@ -7,6 +7,7 @@ import {
   HeartIcon,
   EmojiHappyIcon,
   PlusCircleIcon,
+  TrashIcon,
 } from "@heroicons/react/outline";
 import { HeartIcon as HeartIconFilled } from "@heroicons/react/solid";
 import {
@@ -22,8 +23,8 @@ import {
 } from "firebase/firestore";
 import { useSession } from "next-auth/react";
 import { db } from "../../../firebase";
-import Moment from "react-moment";
 import EmojiPicker from "emoji-picker-react";
+import Comment from "../Comment/Comment";
 
 const Post = ({ id, uid, username, profileImg, image, caption }) => {
   const { data: session } = useSession();
@@ -31,7 +32,7 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
   const [comments, setComments] = useState([]);
   const [likes, setLikes] = useState([]);
   const [hasLiked, setHasLiked] = useState(false);
-  const [dropMenu, setDropMenu] = useState(false);
+  const [postDropMenu, setPostDropMenu] = useState(false);
   const [moreComments, setMoreComments] = useState(2);
   const [openEmoji, setOpenEmoji] = useState(false);
 
@@ -46,6 +47,7 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
       comment: commentToSend,
       username: session.user.username,
       userImage: session.user.image,
+      uid: session.user.uid,
       timestamp: serverTimestamp(),
     });
   };
@@ -66,15 +68,15 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
 
   const likePost = async (e) => {
     !hasLiked
-      ? setDoc(doc(db, "posts", id, "likes", session.user.uid), {
+      ? await setDoc(doc(db, "posts", id, "likes", session.user.uid), {
           username: session.user.username,
         })
-      : deleteDoc(doc(db, "posts", id, "likes", session.user.uid));
+      : await deleteDoc(doc(db, "posts", id, "likes", session.user.uid));
   };
 
   const deletePost = async (e) => {
     if (uid == session?.user?.uid) {
-      deleteDoc(doc(db, "posts", id));
+      await deleteDoc(doc(db, "posts", id));
     }
   };
 
@@ -114,8 +116,8 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
           />
           <p className="font-bold flex-1">{username}</p>
           <div
-            onClick={() => setDropMenu((prev) => !prev)}
-            className=" hover:bg-gray-200 cursor-pointer rounded-full p-2"
+            onClick={() => setPostDropMenu((prev) => !prev)}
+            className=" hover:bg-gray-200 cursor-pointer rounded-full p-1 transition-all delay-100 ease-in"
           >
             <DotsHorizontalIcon className="h-5" />
           </div>
@@ -156,26 +158,9 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
         {comments && (
           <div className="flex flex-col">
             {comments.slice(0, moreComments).map((comment) => (
-              <div
-                key={comment.id}
-                className="flex items-center ml-8 mb-3 overflow-x-scroll scrollbar-thumb-black scrollbar-thin  "
-              >
-                <img
-                  className="h-6 rounded-full"
-                  src={comment.data().userImage}
-                  alt=""
-                />{" "}
-                <div className="flex flex-1 items-center ml-2">
-                  <span className="font-bold mr-2">
-                    {comment.data().username}
-                  </span>
-                  <p className="text-sm">{comment.data().comment}</p>
-                </div>
-                <Moment fromNow interval={1000} className="pr-5 text-xs">
-                  {comment?.data().timestamp?.toDate()}
-                </Moment>
-              </div>
+              <Comment key={comment.id} comment={comment} />
             ))}
+
             <button className="mx-auto content-center">
               {comments.length > 2 && moreComments !== -1 && (
                 <PlusCircleIcon
@@ -211,14 +196,17 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
             </button>
           </form>
         )}
-        {openEmoji && 
-        <div  className="absolute bottom-16 left-4">
-          <EmojiPicker onEmojiClick={emojiClickHandler} lazyLoadEmojis={true}/>
-        </div>
-        }
+        {openEmoji && (
+          <div className="absolute bottom-16 left-4">
+            <EmojiPicker
+              onEmojiClick={emojiClickHandler}
+              lazyLoadEmojis={true}
+            />
+          </div>
+        )}
 
         {/* drop menu  */}
-        {dropMenu && (
+        {postDropMenu && (
           <ul className="absolute top-16 right-5 bg-white w-1/4 flex flex-col drop-shadow-2xl shadow-2xl rounded-sm px-1.5">
             {session?.user?.uid === uid && (
               <li
