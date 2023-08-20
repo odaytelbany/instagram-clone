@@ -158,7 +158,7 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
         {comments && (
           <div className="flex flex-col">
             {comments.slice(0, moreComments).map((comment) => (
-              <Comment key={comment.id} comment={comment} />
+              <Comment key={comment.id} comment={comment} postId={id}/>
             ))}
 
             <button className="mx-auto content-center">
@@ -207,11 +207,11 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
 
         {/* drop menu  */}
         {postDropMenu && (
-          <ul className="absolute top-16 right-5 bg-white w-1/4 flex flex-col drop-shadow-2xl shadow-2xl rounded-sm px-1.5">
+          <ul className="absolute top-16 right-5 bg-white w-1/4 flex flex-col drop-shadow-2xl shadow-2xl rounded-sm">
             {session?.user?.uid === uid && (
               <li
                 onClick={deletePost}
-                className="text-center hover:bg-slate-50 transition-all delay-50 cursor-pointer border-b-2 border-gray-200"
+                className="text-center text-red-500 hover:bg-slate-50 transition-all delay-50 cursor-pointer border-b-2 border-gray-200"
               >
                 Delete
               </li>
