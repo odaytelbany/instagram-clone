@@ -1,3 +1,4 @@
+"use client"
 import React, { useEffect, useState } from "react";
 import {
   BookmarkIcon,
@@ -25,7 +26,7 @@ import { useSession } from "next-auth/react";
 import { db, storage } from "../../../firebase";
 import EmojiPicker from "emoji-picker-react";
 import Comment from "../Comment/Comment";
-import { deleteObject, ref } from "firebase/storage";
+import { deleteObject, getMetadata, ref } from "firebase/storage";
 
 const Post = ({ id, uid, username, profileImg, image, caption }) => {
   const { data: session } = useSession();
@@ -36,6 +37,7 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
   const [postDropMenu, setPostDropMenu] = useState(false);
   const [moreComments, setMoreComments] = useState(2);
   const [openEmoji, setOpenEmoji] = useState(false);
+  const [fileType, setFiletype] = useState('');
 
   const sendComment = async (e) => {
     e.preventDefault();
@@ -76,11 +78,11 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
   };
 
   // Delete Post
-  const deletedFile = ref(storage, image);
+  const fileRef = ref(storage, image);
   const deletePost = async (e) => {
     if (uid == session?.user?.uid) {
       await deleteDoc(doc(db, "posts", id));
-      await deleteObject(deletedFile);
+      await deleteObject(fileRef);
     }
   };
 
@@ -106,6 +108,20 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
     setComment((prev) => prev + e.emoji);
   };
 
+  // Get the file type
+  useEffect(() => {
+    async function getData() {
+      await getMetadata(fileRef)
+      .then((metadata) => {
+        setFiletype(metadata.contentType.split('/')[0]);
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    } 
+    getData()
+  }, [image])
+
   return (
     image && (
       <div className="relative bg-white my-7 rounded-sm shadow-md">
@@ -126,9 +142,18 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
         </div>
 
         {/* img */}
-        <div>
-          <img src={image} alt="" className="w-full object-cover" />
-        </div>
+        {
+          fileType === 'video' ? 
+          (<video src={image} width="600" height="300" controls="controls"/>) 
+          : fileType === 'image' ?
+          (
+            <div>
+              <img src={image} alt="" className="w-full object-cover" />
+            </div>
+          )
+          : ''
+        }
+        
         {/* buttons */}
         {session && (
           <div className="flex justify-between px-4 mt-4 items-center">
