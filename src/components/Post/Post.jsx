@@ -22,9 +22,10 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { useSession } from "next-auth/react";
-import { db } from "../../../firebase";
+import { db, storage } from "../../../firebase";
 import EmojiPicker from "emoji-picker-react";
 import Comment from "../Comment/Comment";
+import { deleteObject, ref } from "firebase/storage";
 
 const Post = ({ id, uid, username, profileImg, image, caption }) => {
   const { data: session } = useSession();
@@ -74,9 +75,12 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
       : await deleteDoc(doc(db, "posts", id, "likes", session.user.uid));
   };
 
+  // Delete Post
+  const deletedFile = ref(storage, image);
   const deletePost = async (e) => {
     if (uid == session?.user?.uid) {
       await deleteDoc(doc(db, "posts", id));
+      await deleteObject(deletedFile);
     }
   };
 
@@ -87,7 +91,6 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
         setLikes(snapshot.docs);
       }
     );
-
     return unsubscribe;
   }, [db, id]);
 
@@ -97,10 +100,9 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
     );
   }, [likes]);
 
+
   // For the Emoji picker
   const emojiClickHandler = (e) => {
-    // setComment(prev => prev + emojiObject);
-    console.log(e.emoji);
     setComment((prev) => prev + e.emoji);
   };
 
