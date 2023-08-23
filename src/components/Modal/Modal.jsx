@@ -116,7 +116,7 @@ const Modal = () => {
                         as="h3"
                         className="mt-2 text-base font-semibold leading-6 text-gray-900"
                       >
-                        Upload a photo
+                        Upload a photo or video
                       </Dialog.Title>
                       <div>
                         <input

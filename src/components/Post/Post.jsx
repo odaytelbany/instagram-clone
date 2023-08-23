@@ -27,6 +27,7 @@ import { db, storage } from "../../../firebase";
 import EmojiPicker from "emoji-picker-react";
 import Comment from "../Comment/Comment";
 import { deleteObject, getMetadata, ref } from "firebase/storage";
+import ReactPlayer from "react-player";
 
 const Post = ({ id, uid, username, profileImg, image, caption }) => {
   const { data: session } = useSession();
@@ -37,7 +38,7 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
   const [postDropMenu, setPostDropMenu] = useState(false);
   const [moreComments, setMoreComments] = useState(2);
   const [openEmoji, setOpenEmoji] = useState(false);
-  const [fileType, setFiletype] = useState('');
+  const [fileType, setFiletype] = useState("");
 
   const sendComment = async (e) => {
     e.preventDefault();
@@ -102,7 +103,6 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
     );
   }, [likes]);
 
-
   // For the Emoji picker
   const emojiClickHandler = (e) => {
     setComment((prev) => prev + e.emoji);
@@ -112,15 +112,15 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
   useEffect(() => {
     async function getData() {
       await getMetadata(fileRef)
-      .then((metadata) => {
-        setFiletype(metadata.contentType.split('/')[0]);
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-    } 
-    getData()
-  }, [image])
+        .then((metadata) => {
+          setFiletype(metadata.contentType.split("/")[0]);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+    getData();
+  }, [image]);
 
   return (
     image && (
@@ -142,18 +142,36 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
         </div>
 
         {/* img */}
-        {
-          fileType === 'video' ? 
-          (<video src={image} width="600" height="300" controls="controls"/>) 
-          : fileType === 'image' ?
-          (
+        <div className="relative">
+          {fileType === "video" ? (
+            // <video src={image} controls="controls"/>
+            <div className="relative">
+              <ReactPlayer
+                url={image}
+                controls={true}
+                playIcon={true}
+                className=""
+                width={"100%"}
+                height={"100%"}
+                // config={{
+                //   youtube: {
+                //     playerVars: { showinfo: 1 }
+                //   },
+                //   facebook: {
+                //     appId: '12345'
+                //   }
+                // }}
+              />
+            </div>
+          ) : fileType === "image" ? (
             <div>
               <img src={image} alt="" className="w-full object-cover" />
             </div>
-          )
-          : ''
-        }
-        
+          ) : (
+            ""
+          )}
+        </div>
+
         {/* buttons */}
         {session && (
           <div className="flex justify-between px-4 mt-4 items-center">
@@ -185,7 +203,7 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
         {comments && (
           <div className="flex flex-col">
             {comments.slice(0, moreComments).map((comment) => (
-              <Comment key={comment.id} comment={comment} postId={id}/>
+              <Comment key={comment.id} comment={comment} postId={id} />
             ))}
 
             <button className="mx-auto content-center">
