@@ -30,6 +30,7 @@ import { deleteObject, getMetadata, ref } from "firebase/storage";
 import ReactPlayer from "react-player";
 
 const Post = ({ id, uid, username, profileImg, image, caption }) => {
+  console.log(id, uid, username, profileImg, image, caption )
   const { data: session } = useSession();
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
