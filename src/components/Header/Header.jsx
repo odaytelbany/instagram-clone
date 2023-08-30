@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 import Icon from "/public/1f914.png";
 import Link from "next/link";
 import {
@@ -19,6 +19,8 @@ import { modalState } from "@/atoms/modalAtom";
 const Header = () => {
   const { data: session } = useSession();
   const [open, setOpen] = useRecoilState(modalState);
+  const [profileDropMenu, setProfileDropMenu] = useState(false);
+
   return (
     <div className="border-b shadow-sm sticky top-0 bg-white z-50 px-2 md:px-10">
       <div className="flex justify-between items-center max-w-6xl lg:mx-auto">
@@ -54,9 +56,14 @@ const Header = () => {
 
         {/* right  */}
         <div className="flex items-center justify-end space-x-4">
-          <HomeIcon className="navBtn" />
+          <Link href={'/'}>
+            <HomeIcon className="navBtn" />
+          </Link>
           {!session && (
-            <Link href="/auth" className="font-semibold text-sm flex justify-center items-center !ml-0 md:!ml-4 break-words">
+            <Link
+              href="/auth"
+              className="font-semibold text-sm flex justify-center items-center !ml-0 md:!ml-4 break-words"
+            >
               Sign In
             </Link>
           )}
@@ -78,10 +85,25 @@ const Header = () => {
               <img
                 src={session?.user?.image}
                 className="h-10 w-10 cursor-pointer rounded-full"
-                onClick={signOut}
+                onClick={() => setProfileDropMenu((prev) => !prev)}
               />
             </>
           )}
+
+          {profileDropMenu && (
+            <ul className="absolute top-16 right-5 bg-white w-1/4 flex flex-col drop-shadow-2xl shadow-2xl rounded-sm">
+              <li
+                onClick={signOut}
+                className="text-center text-red-500 hover:bg-slate-50 transition-all delay-50 cursor-pointer border-b-2 border-gray-200"
+              >
+                Sign Out
+              </li>
+              <li className="text-center hover:bg-slate-50 transition-all delay-50 cursor-pointer border-gray-200">
+                Saved Posts
+              </li>
+            </ul>
+          )}
+
         </div>
       </div>
     </div>
