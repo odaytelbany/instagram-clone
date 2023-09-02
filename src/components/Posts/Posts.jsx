@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import Post from '../Post/Post'
-import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
+import { Firestore, collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { db } from '../../../firebase';
-
+import Link from 'next/link';
+// import { useRecoilState } from 'recoil';
+// import { postsState } from '@/atoms/postsAtom';
 const Posts = () => {
+    // const [posts, setPosts] = useRecoilState(postsState);
     const [posts, setPosts] = useState([]);
 
     useEffect(() => {
@@ -20,7 +23,11 @@ const Posts = () => {
     <div>
         {
             posts?.map((post) => {
-                return <Post key={post.id} id={post.id} {...post.data()}/>
+                return (
+                    <Link href={`/${post.id}`}>
+                        <Post key={post.id} id={post.id} {...post.data()}/>
+                    </Link>
+                )
             })
         }        
     </div>

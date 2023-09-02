@@ -149,7 +149,6 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
               <ReactPlayer
                 url={image}
                 controls={true}
-                playIcon={true}
                 className=""
                 width={"100%"}
                 height={"100%"}

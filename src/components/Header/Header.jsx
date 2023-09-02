@@ -56,7 +56,7 @@ const Header = () => {
 
         {/* right  */}
         <div className="flex items-center justify-end space-x-4">
-          <Link href={'/'}>
+          <Link href={"/"}>
             <HomeIcon className="navBtn" />
           </Link>
           {!session && (
@@ -82,29 +82,30 @@ const Header = () => {
               <UserGroupIcon className="navBtn" />
               <HeartIcon className="navBtn" />
               <MenuIcon className="navBtn w-10 h-10 inline-grid md:hidden" />
-              <img
-                src={session?.user?.image}
-                className="h-10 w-10 cursor-pointer rounded-full"
-                onClick={() => setProfileDropMenu((prev) => !prev)}
-              />
+              <div className="relative">
+                <img
+                  src={session?.user?.image}
+                  className="h-10 w-10 cursor-pointer rounded-full"
+                  onClick={() => setProfileDropMenu((prev) => !prev)}
+                />
+                {profileDropMenu && (
+                  <ul className="absolute top-12 right-0 bg-white w-40 flex flex-col drop-shadow-2xl shadow-2xl rounded-sm">
+                    <li className="text-center hover:bg-slate-50 transition-all delay-50 cursor-pointer border-b-2 border-gray-200">
+                      Saved Posts
+                    </li>
+                    <li
+                      onClick={signOut}
+                      className="text-center text-red-500 hover:bg-slate-50 transition-all delay-50 cursor-pointer "
+                    >
+                      Sign Out
+                    </li>
+                  </ul>
+                )}
+              </div>
             </>
           )}
-
-          {profileDropMenu && (
-            <ul className="absolute top-16 right-5 bg-white w-1/4 flex flex-col drop-shadow-2xl shadow-2xl rounded-sm">
-              <li
-                onClick={signOut}
-                className="text-center text-red-500 hover:bg-slate-50 transition-all delay-50 cursor-pointer border-b-2 border-gray-200"
-              >
-                Sign Out
-              </li>
-              <li className="text-center hover:bg-slate-50 transition-all delay-50 cursor-pointer border-gray-200">
-                Saved Posts
-              </li>
-            </ul>
-          )}
-
         </div>
+
       </div>
     </div>
   );
