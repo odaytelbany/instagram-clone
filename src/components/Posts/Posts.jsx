@@ -23,11 +23,7 @@ const Posts = () => {
     <div>
         {
             posts?.map((post) => {
-                return (
-                    <Link href={`/${post.id}`}>
-                        <Post key={post.id} id={post.id} {...post.data()}/>
-                    </Link>
-                )
+                return <Post key={post.id} id={post.id} {...post.data()}/>
             })
         }        
     </div>

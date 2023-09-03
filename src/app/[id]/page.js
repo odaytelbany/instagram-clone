@@ -18,7 +18,7 @@ const SinglePost = ({params}) => {
     }, [db])
     
   return (
-    <div>
+    <div className='scroll-px-40 md:max-w-lg lg:max-w-3xl xl:max-w-5xl mx-auto relative'>
         {
             posts?.map((post) => {
                 if (post.id === params.id){

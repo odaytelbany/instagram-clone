@@ -28,6 +28,7 @@ import EmojiPicker from "emoji-picker-react";
 import Comment from "../Comment/Comment";
 import { deleteObject, getMetadata, ref } from "firebase/storage";
 import ReactPlayer from "react-player";
+import Link from "next/link";
 
 const Post = ({ id, uid, username, profileImg, image, caption }) => {
   const { data: session } = useSession();
@@ -142,7 +143,7 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
         </div>
 
         {/* img */}
-        <div className="relative">
+        <Link href={`/${id}`} className="relative">
           {fileType === "video" ? (
             // <video src={image} controls="controls"/>
             <div className="relative">
@@ -169,7 +170,7 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
           ) : (
             ""
           )}
-        </div>
+        </Link>
 
         {/* buttons */}
         {session && (
@@ -183,7 +184,7 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
                   onClick={likePost}
                 />
               )}
-              <ChatIcon className="btn" />
+              <Link href={`/${id}`}><ChatIcon className="btn" /></Link>
               <PaperAirplaneIcon className="btn rotate-90" />
             </div>
             <BookmarkIcon className="btn" />
