@@ -9,6 +9,7 @@ import {
   EmojiHappyIcon,
   PlusCircleIcon,
   TrashIcon,
+  XIcon,
 } from "@heroicons/react/outline";
 import { HeartIcon as HeartIconFilled } from "@heroicons/react/solid";
 import {
@@ -29,6 +30,22 @@ import Comment from "../Comment/Comment";
 import { deleteObject, getMetadata, ref } from "firebase/storage";
 import ReactPlayer from "react-player";
 import Link from "next/link";
+import {
+  FacebookShareButton,
+  WhatsappShareButton,
+  WhatsappIcon,
+  FacebookIcon,
+  TelegramShareButton,
+  TelegramIcon,
+  FacebookMessengerIcon,
+  FacebookMessengerShareButton,
+  InstapaperShareButton,
+  InstapaperIcon,
+  TwitterIcon,
+  TwitterShareButton,
+  LinkedinIcon,
+  LinkedinShareButton,
+} from "react-share";
 
 const Post = ({ id, uid, username, profileImg, image, caption }) => {
   const { data: session } = useSession();
@@ -40,6 +57,7 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
   const [moreComments, setMoreComments] = useState(2);
   const [openEmoji, setOpenEmoji] = useState(false);
   const [fileType, setFiletype] = useState("");
+  const [share, setShare] = useState(false);
 
   const sendComment = async (e) => {
     e.preventDefault();
@@ -123,6 +141,7 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
     getData();
   }, [image]);
 
+  const shareUrl = `http://localhost:3000/${id}`;
   return (
     image && (
       <div className="relative bg-white my-7 rounded-sm shadow-md">
@@ -174,7 +193,7 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
 
         {/* buttons */}
         {session && (
-          <div className="flex justify-between px-4 mt-4 items-center">
+          <div className="flex justify-between px-4 mt-4 items-center relative">
             <div className="flex space-x-4 items-center">
               {!hasLiked ? (
                 <HeartIcon className="btn" onClick={likePost} />
@@ -184,12 +203,92 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
                   onClick={likePost}
                 />
               )}
-              <Link href={`/${id}`}><ChatIcon className="btn" /></Link>
-              <PaperAirplaneIcon className="btn rotate-90" />
+              <Link href={`/${id}`}>
+                <ChatIcon className="btn" />
+              </Link>
+              <PaperAirplaneIcon
+                className="btn rotate-90"
+                onClick={() => setShare((prev) => !prev)}
+              />
             </div>
             <BookmarkIcon className="btn" />
+
+            {share && (
+              <div className="p-3 rounded bg-white shadow-xl drop-shadow-xl w-[98%] h-32 absolute z-40 bottom-12 mx-auto left-[1%] overflow-hidden">
+                <div className="share-header flex">
+                  <h1 className="flex-1 text-lg font-semibold">Share</h1>
+                  <XIcon className="btn" onClick={() => setShare(false)}/>
+                </div>
+
+                <div className="icons mx-auto w-fit mt-4">
+                  <FacebookShareButton
+                    url={shareUrl}
+                    quote={"Title or jo bhi aapko likhna ho"}
+                    hashtag={"#portfolio..."}
+                    className="mr-2 btn"
+                  >
+                    <FacebookIcon size={50} round={true} />
+                  </FacebookShareButton>
+
+                  <FacebookMessengerShareButton
+                    url={shareUrl}
+                    quote={"Title or jo bhi aapko likhna ho"}
+                    hashtag={"#portfolio..."}
+                    className="mr-2 btn"
+                  >
+                    <FacebookMessengerIcon size={50} round={true} />
+                  </FacebookMessengerShareButton>
+
+                  <InstapaperShareButton
+                    url={shareUrl}
+                    quote={"Title or jo bhi aapko likhna ho"}
+                    hashtag={"#portfolio..."}
+                    className="mr-2 btn"
+                  >
+                    <InstapaperIcon size={50} round={true} />
+                  </InstapaperShareButton>
+
+                  <WhatsappShareButton
+                    url={shareUrl}
+                    quote={"Title or jo bhi aapko likhna ho"}
+                    hashtag={"#portfolio..."}
+                    className="mr-2 btn"
+                  >
+                    <WhatsappIcon size={50} round={true} />
+                  </WhatsappShareButton>
+
+                  <TelegramShareButton
+                    url={shareUrl}
+                    quote={"Title or jo bhi aapko likhna ho"}
+                    hashtag={"#portfolio..."}
+                    className="mr-2 btn"
+                  >
+                    <TelegramIcon size={50} round={true} />
+                  </TelegramShareButton>
+
+                  <TwitterShareButton
+                    url={shareUrl}
+                    quote={"Title or jo bhi aapko likhna ho"}
+                    hashtag={"#portfolio..."}
+                    className="mr-2 btn"
+                  >
+                    <TwitterIcon size={50} round={true} />
+                  </TwitterShareButton>
+
+                  <LinkedinShareButton
+                    url={shareUrl}
+                    quote={"Title or jo bhi aapko likhna ho"}
+                    hashtag={"#portfolio..."}
+                    className="mr-2 btn"
+                  >
+                    <LinkedinIcon size={50} round={true} />
+                  </LinkedinShareButton>
+                </div>
+              </div>
+            )}
           </div>
         )}
+
         {/* caption */}
         <div className="p-5 overflow-x-scroll scrollbar-thumb-black scrollbar-thin">
           {likes.length > 0 && (
