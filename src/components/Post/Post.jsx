@@ -1,5 +1,5 @@
 "use client"
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   BookmarkIcon,
   ChatIcon,
@@ -142,6 +142,7 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
   }, [image]);
 
   const shareUrl = `http://localhost:3000/${id}`;
+  const copyRef = useRef();
   return (
     image && (
       <div className="relative bg-white my-7 rounded-sm shadow-md">
@@ -213,13 +214,13 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
             </div>
             <BookmarkIcon className="btn" />
 
+            {/* share  */}
             {share && (
-              <div className="p-3 rounded bg-white shadow-xl drop-shadow-xl w-[98%] h-32 absolute z-40 bottom-12 mx-auto left-[1%] overflow-hidden">
+              <div className="p-3 rounded bg-white shadow-xl drop-shadow-xl w-[98%] absolute z-40 bottom-12 mx-auto left-[1%] overflow-hidden">
                 <div className="share-header flex">
                   <h1 className="flex-1 text-lg font-semibold">Share</h1>
                   <XIcon className="btn" onClick={() => setShare(false)}/>
                 </div>
-
                 <div className="icons mx-auto w-fit mt-4">
                   <FacebookShareButton
                     url={shareUrl}
@@ -283,6 +284,10 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
                   >
                     <LinkedinIcon size={50} round={true} />
                   </LinkedinShareButton>
+                </div>
+                <div className="share-copy rounded-lg border-2 border-gray-200 p-2 bg-gray-100 mx-auto flex mt-4 w-4/5 justify-between items-center">
+                  <input className="flex-1 bg-transparent h-fit p-0 border-none rounded-lg" type="text" value={`http://localhost:3000/${id}`} ref={copyRef}/>
+                  <button className="bg-red-500 hover:bg-red-300 transition-all ease-in delay-75 text-white rounded-3xl px-3 py-2 ml-2" onClick={() => navigator.clipboard.writeText(`http://localhost:3000/${id}`)}>Copy</button>
                 </div>
               </div>
             )}
