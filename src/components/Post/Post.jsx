@@ -141,8 +141,10 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
     getData();
   }, [image]);
 
+  // For sharing a post
   const shareUrl = `http://localhost:3000/${id}`;
   const copyRef = useRef();
+
   return (
     image && (
       <div className="relative bg-white my-7 rounded-sm shadow-md">
@@ -360,13 +362,19 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
             {session?.user?.uid === uid && (
               <li
                 onClick={deletePost}
-                className="text-center text-red-500 hover:bg-slate-50 transition-all delay-50 cursor-pointer border-b-2 border-gray-200"
+                className="py-1 px-2 text-center text-red-500 hover:bg-slate-50 transition-all delay-50 cursor-pointer border-b-2 border-gray-200"
               >
                 Delete
               </li>
             )}
-            <li className="text-center hover:bg-slate-50 transition-all delay-50 cursor-pointer border-gray-200">
-              Shere
+            <li onClick={() => setShare((prev) => !prev)} className="py-1 px-2 text-center hover:bg-slate-50 transition-all delay-50 cursor-pointer border-b-2 border-gray-200">
+              Share
+            </li>
+            <li onClick={() => navigator.clipboard.writeText(`http://localhost:3000/${id}`)} className="py-1 px-2 text-center hover:bg-slate-50 transition-all delay-50 cursor-pointer border-b-2 border-gray-200">
+              Copy Link
+            </li>
+            <li onClick={() => setPostDropMenu(false)} className="py-1 px-2 text-center hover:bg-slate-50 transition-all delay-50 cursor-pointer border-gray-200">
+              Cancel
             </li>
           </ul>
         )}

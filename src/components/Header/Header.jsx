@@ -90,12 +90,12 @@ const Header = () => {
                 />
                 {profileDropMenu && (
                   <ul className="absolute top-12 right-0 bg-white w-40 flex flex-col drop-shadow-2xl shadow-2xl rounded-sm">
-                    <li className="text-center hover:bg-slate-50 transition-all delay-50 cursor-pointer border-b-2 border-gray-200">
+                    <li className="text-center px-2 py-1 hover:bg-slate-50 transition-all delay-50 cursor-pointer border-b-2 border-gray-200">
                       Saved Posts
                     </li>
                     <li
                       onClick={signOut}
-                      className="text-center text-red-500 hover:bg-slate-50 transition-all delay-50 cursor-pointer "
+                      className="text-center px-2 py-1 text-red-500 hover:bg-slate-50 transition-all delay-50 cursor-pointer "
                     >
                       Sign Out
                     </li>
