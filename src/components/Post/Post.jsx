@@ -12,6 +12,7 @@ import {
   XIcon,
 } from "@heroicons/react/outline";
 import { HeartIcon as HeartIconFilled } from "@heroicons/react/solid";
+import { BookmarkIcon as BookmarkIconFilled } from "@heroicons/react/solid";
 import {
   addDoc,
   collection,
@@ -22,6 +23,7 @@ import {
   query,
   serverTimestamp,
   setDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { useSession } from "next-auth/react";
 import { db, storage } from "../../../firebase";
@@ -47,7 +49,7 @@ import {
   LinkedinShareButton,
 } from "react-share";
 
-const Post = ({ id, uid, username, profileImg, image, caption }) => {
+const Post = ({ id, uid, username, profileImg, image, caption, saved }) => {
   const { data: session } = useSession();
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
@@ -58,6 +60,7 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
   const [openEmoji, setOpenEmoji] = useState(false);
   const [fileType, setFiletype] = useState("");
   const [share, setShare] = useState(false);
+  const [savedPost, setSavedPost] = useState(false);
 
   const sendComment = async (e) => {
     e.preventDefault();
@@ -145,6 +148,14 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
   const shareUrl = `http://localhost:3000/${id}`;
   const copyRef = useRef();
 
+  // For post saving:
+  const savePostHandler = async () => {
+    setSavedPost(prev => !prev)
+    await updateDoc(doc(db, "posts", id), {
+      saved: savedPost
+    })
+  }
+
   return (
     image && (
       <div className="relative bg-white my-7 rounded-sm shadow-md">
@@ -214,7 +225,10 @@ const Post = ({ id, uid, username, profileImg, image, caption }) => {
                 onClick={() => setShare((prev) => !prev)}
               />
             </div>
-            <BookmarkIcon className="btn" />
+            {/* saved  */}
+            {
+              !saved ? (<BookmarkIcon className="btn" onClick={savePostHandler}/>) : (<BookmarkIconFilled className="btn" onClick={savePostHandler}/>)
+            }
 
             {/* share  */}
             {share && (

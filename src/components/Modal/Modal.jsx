@@ -48,6 +48,7 @@ const Modal = () => {
         caption: captionRef.current.value,
         profileImg: session.user.image,
         timestamp: serverTimestamp(),
+        saved: false
       })
       const imageRef = ref(storage, `posts/${docRef.id}/image`)
 
