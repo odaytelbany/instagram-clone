@@ -24,7 +24,10 @@ const Header = () => {
   return (
     <div className="border-b shadow-sm sticky top-0 bg-white z-50 px-2 md:px-10">
       <div className="flex justify-between items-center max-w-6xl lg:mx-auto">
-        <Link href={'/'} className="relative w-24 h-10 hidden lg:inline-grid cursor-pointer">
+        <Link
+          href={"/"}
+          className="relative w-24 h-10 hidden lg:inline-grid cursor-pointer"
+        >
           <img
             src="https://links.papareact.com/ocw"
             alt="instagram logo"
@@ -32,7 +35,10 @@ const Header = () => {
           />
         </Link>
 
-        <Link href={'/'} className="relative w-10 h-10 lg:hidden flex-shrink-0 cursor-pointer">
+        <Link
+          href={"/"}
+          className="relative w-10 h-10 lg:hidden flex-shrink-0 cursor-pointer"
+        >
           <img
             src="https://links.papareact.com/jjm"
             alt="instagram logo"
@@ -90,9 +96,11 @@ const Header = () => {
                 />
                 {profileDropMenu && (
                   <ul className="absolute top-12 right-0 bg-white w-40 flex flex-col drop-shadow-2xl shadow-2xl rounded-sm">
-                    <li className="text-center px-2 py-1 hover:bg-slate-50 transition-all delay-50 cursor-pointer border-b-2 border-gray-200">
-                      Saved Posts
-                    </li>
+                    <Link href={"/savedPosts"}>
+                      <li className="text-center px-2 py-1 hover:bg-slate-50 transition-all delay-50 cursor-pointer border-b-2 border-gray-200">
+                        Saved Posts
+                      </li>
+                    </Link>
                     <li
                       onClick={signOut}
                       className="text-center px-2 py-1 text-red-500 hover:bg-slate-50 transition-all delay-50 cursor-pointer "
@@ -105,7 +113,6 @@ const Header = () => {
             </>
           )}
         </div>
-
       </div>
     </div>
   );
